@@ -10,24 +10,31 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170920083910) do
+ActiveRecord::Schema.define(version: 20170920102302) do
 
   create_table "items", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
     t.string "description"
-    t.boolean "craftable_from_recipe"
+    t.integer "craftable", limit: 1
     t.integer "recipe_id"
-    t.boolean "usable_as_weapon"
+    t.integer "weapon", limit: 1
     t.integer "weapon_id"
-    t.integer "weapon_type"
+    t.string "weapon_type"
     t.boolean "raw_material"
     t.boolean "processed_material"
-    t.boolean "dropped_in_the_game"
+    t.boolean "drop_item"
     t.boolean "armor"
-    t.string "chance_of_being_dropped"
-    t.boolean "conceived_by_user"
+    t.string "drop_possibility"
+    t.boolean "user_defined"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "item_type"
+    t.boolean "food"
+    t.integer "food_id"
+    t.boolean "medicine"
+    t.integer "medicine_id"
+    t.integer "raw_material_id"
+    t.integer "processed_material_id"
   end
 
 end
