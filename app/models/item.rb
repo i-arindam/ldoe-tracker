@@ -1,19 +1,19 @@
 class Item < ApplicationRecord
-  ALLOWED_TYPES_OF_ITEMS = %w(ARMOR CRAFTABLE FOOD WEAPON MEDICINE RAW_MATERIAL PROCESSED_MATERIAL DROPPED_ITEM FURNITURE TOOLS TRANSPORT USER_DEFINED)
-  validate_presence_of :item_type
-  validate_inclusion_of :item_type, :in => ALLOWED_TYPES_OF_ITEMS
+  ALLOWED_TYPES_OF_ITEMS = %w(ARMOR CRAFTABLE FOOD WEAPON MEDICINE RAW_MATERIAL PROCESSED_MATERIAL DROPPED_ITEM FURNITURE TOOLS USER_DEFINED)
+  validates_presence_of :item_type
+  validates_inclusion_of :item_type, :in => ALLOWED_TYPES_OF_ITEMS
 
   before_validation :infer_default_values_from_item_type
 
-  validate_presence_of :name
+  validates_presence_of :name
 
   # Validations to ensure there are references to the actual items
   validate :must_have_weapon, :if => :weapon?
   validate :must_have_recipe, :if => :craftable?
   validate :must_have_raw_material, :if => :raw_material?
   validate :must_have_processed_material, :if => :processed_material?
-  validate :must_have_armor, :if => armor?
-  validate :must_have_food, :if => food?
+  validate :must_have_armor, :if => :armor?
+  validate :must_have_food, :if => :food?
   validate :must_have_medicine, :if => :medicine?
 
 
@@ -35,14 +35,12 @@ class Item < ApplicationRecord
       raw_material = true
     when 'PROCESSED_MATERIAL'
       processed_material = true
-    when 'DROPPED_ITEM'
+    when 'DROPPED_ITEM' # needs  rethink. Maybe this can be a column on item, indicating which items are dropped v/s craftable
       drop_item = true
     when 'FURNITURE'
       furniture = true
-    when 'TOOLS'
+    when 'TOOLS' # could also be a column on item
       tool = true
-    when 'TRANSPORT'
-      transport = true
     when 'USER_DEFINED'
       user_defined = true
     end
